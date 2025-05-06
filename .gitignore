@@ -1,0 +1,18 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+venv/
+.env
+
+# OS files
+.DS_Store
+
+# Model files
+*.pth
+*.pt
+
+# Streamlit generated
+*.log
