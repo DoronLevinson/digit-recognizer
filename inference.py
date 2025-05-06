@@ -11,7 +11,6 @@ def load_model(path="simple_nn_mnist_model.pth"):
     model.eval()
     return model
 
-# Preprocess and predict (no torchvision)
 def predict_digit(image: Image.Image, model):
     # Convert to grayscale and resize to 28x28
     image = ImageOps.grayscale(image).resize((28, 28))
@@ -25,6 +24,7 @@ def predict_digit(image: Image.Image, model):
 
     with torch.no_grad():
         output = model(img_tensor)
-        pred = output.argmax(dim=1).item()
+        probs = torch.softmax(output, dim=1).numpy().flatten()
+        pred = int(np.argmax(probs))
 
-    return pred
+    return pred, probs
