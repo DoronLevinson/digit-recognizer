@@ -10,9 +10,11 @@ venv/
 # OS files
 .DS_Store
 
-# Model files
-*.pth
-*.pt
+# # Model files
+# *.pth
+# *.pt
 
 # Streamlit generated
 *.log
+
+*Zone.Identifier
