@@ -1,9 +1,11 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
+from PIL import ImageOps
 import numpy as np
 from inference import load_model, predict_digit
 import matplotlib.pyplot as plt
+import time
 
 st.set_page_config(page_title="Digit Recognizer")
 st.title("🧠 Handwritten Digit Recognizer")
@@ -24,7 +26,7 @@ with canvas_col:
     st.markdown("#### Draw a digit (0–9) below:")
     canvas_result = st_canvas(
         fill_color="white",
-        stroke_width=60,
+        stroke_width=65,
         stroke_color="black",
         background_color="white",
         width=400,
@@ -45,16 +47,28 @@ def plot_confidence(probs, title, color):
     ax.set_title(title, fontsize=10)
     st.pyplot(fig)
 
+
+
 with prediction_col:
     st.markdown("#### Model Predictions:")
 
+    if "prev_probs" not in st.session_state:
+        st.session_state.prev_probs = np.zeros(10)
+
     if canvas_result.image_data is not None:
         image = Image.fromarray((canvas_result.image_data[:, :, 0]).astype(np.uint8))
+        image = ImageOps.invert(image)
         prediction, probs = predict_digit(image, model)
 
-        # For now, show all models (checkbox values unused)
-        plot_confidence(probs, title="Model A (Blue) Prediction Confidence", color="blue")
-        plot_confidence(probs, title="Model B (Red) Prediction Confidence", color="red")
-        plot_confidence(probs, title="Model C (Green) Prediction Confidence", color="green")
+        # Instant plot for others (can add smoothing later)
+        if show_model_a:
+            plot_confidence(probs, title="Model A (Blue) Prediction Confidence", color="blue")
+        if show_model_b:
+            plot_confidence(probs, title="Model B (Red) Prediction Confidence", color="red")
+        if show_model_c:
+            plot_confidence(probs, title="Model C (Green) Prediction Confidence", color="green")
+
+        # Update previous probs after transition
+        st.session_state.prev_probs = probs
     else:
         st.markdown("Waiting for input...")

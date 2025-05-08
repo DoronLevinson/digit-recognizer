@@ -2,10 +2,10 @@ import torch
 import numpy as np
 from PIL import ImageOps
 from PIL import Image
-from model import SimpleNN
+from models.nn_model import SimpleNN
 
 # Load model
-def load_model(path="simple_nn_mnist_model.pth"):
+def load_model(path="models/simple_nn_mnist_model.pth"):
     model = SimpleNN()
     model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     model.eval()
