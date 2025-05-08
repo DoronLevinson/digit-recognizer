@@ -18,3 +18,5 @@ venv/
 *.log
 
 *Zone.Identifier
+
+/data
