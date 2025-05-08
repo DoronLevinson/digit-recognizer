@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import os
 import joblib
+import urllib.request
 from PIL import ImageOps, Image
 from models.nn_model import SimpleNN
 from models.cnn_model import CNN_MNIST
@@ -31,7 +32,13 @@ def predict_digit(image: Image.Image, model):
 # ---- KNN model ----
 
 def load_knn_model(path="models/knn_model.joblib"):
-    return joblib.load(path)
+    load from hugging face
+    model = CNN_MNIST()
+    model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
+    model.eval()
+    return model
+    load locally
+    # return joblib.load(path)
 
 def predict_knn_digit(image: Image.Image, knn_model):
     # Resize and convert to grayscale
