@@ -6,7 +6,8 @@ import urllib.request
 from PIL import ImageOps, Image
 from models.nn_model import SimpleNN
 from models.cnn_model import CNN_MNIST
-from transformers import CLIPModel, CLIPProcessor
+# from transformers import CLIPModel, CLIPProcessor
+import pickle
 
 # ---- DNN model ----
 def load_model(path="models/simple_nn_mnist_model.pth"):
@@ -32,13 +33,17 @@ def predict_digit(image: Image.Image, model):
 # ---- KNN model ----
 
 def load_knn_model(path="models/knn_model.joblib"):
-    # load from hugging face
+    # # load from hugging face
     # model = CNN_MNIST()
     # model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     # model.eval()
     # return model
-    # load locally
-    return joblib.load(path)
+
+    # # load locally
+    # return joblib.load(path)
+
+    with open(path, "rb") as f:
+        return pickle.load(f)
 
 def predict_knn_digit(image: Image.Image, knn_model):
     # Resize and convert to grayscale
