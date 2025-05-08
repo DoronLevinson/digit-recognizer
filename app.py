@@ -5,8 +5,7 @@ import numpy as np
 from inference import (
     load_model, predict_digit,
     load_knn_model, predict_knn_digit,
-    load_cnn_model, predict_cnn_digit,
-    load_clip_model, predict_with_clip
+    load_cnn_model, predict_cnn_digit
 )
 import matplotlib.pyplot as plt
 
@@ -17,7 +16,6 @@ st.title("🧠 Handwritten Digit Recognizer")
 model = load_model()
 knn_model = load_knn_model()
 cnn_model = load_cnn_model()
-clip_model, clip_processor = load_clip_model()
 
 # Layout: canvas on left, predictions on right
 canvas_col, prediction_col = st.columns([1.5, 1])
@@ -34,7 +32,7 @@ with canvas_col:
     st.markdown("#### Draw a digit (-1 to 9):")
     canvas_result = st_canvas(
         fill_color="white",
-        stroke_width=30,
+        stroke_width=40,
         stroke_color="black",
         background_color="white",
         width=400,
@@ -42,7 +40,6 @@ with canvas_col:
         drawing_mode="freedraw",
         key="canvas",
     )
-    predict_clicked = st.button("Predict")
 
 # Plotting
 def plot_confidence(probs, title, color):
@@ -80,8 +77,8 @@ with prediction_col:
             plot_confidence(padded_probs_dnn, title="DNN", color="green")
 
         if show_model_d:
-            probs_clip = predict_with_clip(image, clip_model, clip_processor)
-            plot_confidence(probs_clip, title="ViT (CLIP)", color="purple")
+            pred_cnn, probs_cnn = predict_cnn_digit(image, cnn_model)
+            plot_confidence(probs_cnn, title="CNN", color="purple")
 
     else:
         st.markdown("Waiting for input...")

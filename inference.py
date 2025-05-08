@@ -69,31 +69,31 @@ def predict_cnn_digit(image: Image.Image, model):
     return pred, probs
 
 
-# ---- Load CLIP Model ----
-def load_clip_model(path="models/clip-vit"):
-    model = CLIPModel.from_pretrained(path)
-    processor = CLIPProcessor.from_pretrained(path)
-    model.eval()
-    return model, processor
+# # ---- Load CLIP Model ----
+# def load_clip_model(path="models/clip-vit"):
+#     model = CLIPModel.from_pretrained(path)
+#     processor = CLIPProcessor.from_pretrained(path)
+#     model.eval()
+#     return model, processor
 
-# ---- Predict with CLIP ----
-def predict_with_clip(image: Image.Image, model, processor):
-    labels = ["not a digit"] + [f"the digit {i}" for i in range(0, 10)]
+# # ---- Predict with CLIP ----
+# def predict_with_clip(image: Image.Image, model, processor):
+#     labels = ["not a digit"] + [f"the digit {i}" for i in range(0, 10)]
     
-    # Preprocess
-    inputs = processor(
-        text=labels,
-        images=image,
-        return_tensors="pt",
-        padding=True
-    )
+#     # Preprocess
+#     inputs = processor(
+#         text=labels,
+#         images=image,
+#         return_tensors="pt",
+#         padding=True
+#     )
     
-    # Forward pass
-    with torch.no_grad():
-        outputs = model(**inputs)
-        logits = outputs.logits_per_image  # shape: [1, 10]
-        probs = logits.softmax(dim=1).squeeze().cpu().numpy()  # shape: (10,)
+#     # Forward pass
+#     with torch.no_grad():
+#         outputs = model(**inputs)
+#         logits = outputs.logits_per_image  # shape: [1, 10]
+#         probs = logits.softmax(dim=1).squeeze().cpu().numpy()  # shape: (10,)
     
-    print(probs)
-    print(len(probs))
-    return probs
+#     print(probs)
+#     print(len(probs))
+#     return probs
