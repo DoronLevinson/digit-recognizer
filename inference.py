@@ -37,7 +37,7 @@ def load_knn_model(path="models/knn_model.joblib"):
     model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     model.eval()
     return model
-    load locally
+    # # load locally
     # return joblib.load(path)
 
 def predict_knn_digit(image: Image.Image, knn_model):
