@@ -8,6 +8,7 @@ from models.nn_model import SimpleNN
 from models.cnn_model import CNN_MNIST
 # from transformers import CLIPModel, CLIPProcessor
 import pickle
+import pandas as pd
 
 # ---- DNN model ----
 def load_model(path="models/simple_nn_mnist_model.pth"):
