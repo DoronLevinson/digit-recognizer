@@ -9,6 +9,7 @@ from models.cnn_model import CNN_MNIST
 # from transformers import CLIPModel, CLIPProcessor
 import pickle
 import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
 
 # ---- DNN model ----
 def load_model(path="models/simple_nn_mnist_model.pth"):
