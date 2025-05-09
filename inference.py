@@ -38,6 +38,8 @@ def load_knn_model(path="models/knn_model.joblib"):
     # for streamlit deployment
     X = pd.read_csv("models/X_knn.csv").values
     y = pd.read_csv("models/y_knn.csv").values.ravel()
+    X = X[:2000]
+    y = t[:2000]
 
     knn = KNeighborsClassifier(n_neighbors=10)
     knn.fit(X, y)
