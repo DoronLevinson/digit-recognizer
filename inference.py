@@ -33,17 +33,16 @@ def predict_digit(image: Image.Image, model):
 # ---- KNN model ----
 
 def load_knn_model(path="models/knn_model.joblib"):
-    # # load from hugging face
-    # model = CNN_MNIST()
-    # model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
-    # model.eval()
-    # return model
+    # for streamlit deployment
+    X = pd.read_csv("models/X_knn.csv").values
+    y = pd.read_csv("models/y_knn.csv").values.ravel()
 
-    # # load locally
+    knn = KNeighborsClassifier(n_neighbors=10)
+    knn.fit(X, y)
+    return knn
+
+    # # for local deployment
     # return joblib.load(path)
-
-    with open(path, "rb") as f:
-        return pickle.load(f)
 
 def predict_knn_digit(image: Image.Image, knn_model):
     # Resize and convert to grayscale
