@@ -8,3 +8,4 @@ plotly
 boto3
 scikit-learn
 transformers
+torchvision
