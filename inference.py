@@ -4,31 +4,30 @@ import os
 import joblib
 import urllib.request
 from PIL import ImageOps, Image
-from models.nn_model import SimpleNN
+from models.dnn_model import DNN_MNIST
 from models.cnn_model import CNN_MNIST
-# from transformers import CLIPModel, CLIPProcessor
-import pickle
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
+from models.vit_classifier_model import load_clip_digit_model, CLIPDigitClassifier
+import torchvision.transforms as transforms
 
 # ---- DNN model ----
-def load_model(path="models/simple_nn_mnist_model.pth"):
-    model = SimpleNN()
+def load_dnn_model(path="models/dnn_model.pth"):
+    model = DNN_MNIST()
     model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     model.eval()
     return model
 
-def predict_digit(image: Image.Image, model):
-    image = ImageOps.invert(image)
-    image = ImageOps.grayscale(image).resize((28, 28))
+def predict_dnn_digit(image: Image.Image, model):
+    image = ImageOps.invert(image.convert("L")).resize((28, 28))
     img_array = np.array(image).astype(np.float32) / 255.0
-    img_array = (img_array - 0.5) / 0.5
-    img_tensor = torch.from_numpy(img_array).unsqueeze(0).unsqueeze(0)
+    img_tensor = torch.from_numpy(img_array).flatten().unsqueeze(0)  # [1, 784]
 
     with torch.no_grad():
         output = model(img_tensor)
         probs = torch.softmax(output, dim=1).numpy().flatten()
-        pred = int(np.argmax(probs))
+        probs = np.concatenate(([probs[-1]], probs[:-1]))  # move "-1" class to front
+        pred = int(np.argmax(probs) - 1)
 
     return pred, probs
 
@@ -50,8 +49,7 @@ def load_knn_model(path="models/knn_model.joblib"):
 
 def predict_knn_digit(image: Image.Image, knn_model):
     # Resize and convert to grayscale
-    image = image.resize((28, 28)).convert("L")
-    image = ImageOps.invert(image)
+    image = ImageOps.invert(image.convert("L")).resize((28, 28))
     image = np.array(image).astype("float32").reshape(1, -1)
 
     # Predict with KNN
@@ -84,31 +82,26 @@ def predict_cnn_digit(image: Image.Image, model):
     return pred, probs
 
 
-# # ---- Load CLIP Model ----
-# def load_clip_model(path="models/clip-vit"):
-#     model = CLIPModel.from_pretrained(path)
-#     processor = CLIPProcessor.from_pretrained(path)
-#     model.eval()
-#     return model, processor
 
-# # ---- Predict with CLIP ----
-# def predict_with_clip(image: Image.Image, model, processor):
-#     labels = ["not a digit"] + [f"the digit {i}" for i in range(0, 10)]
-    
-#     # Preprocess
-#     inputs = processor(
-#         text=labels,
-#         images=image,
-#         return_tensors="pt",
-#         padding=True
-#     )
-    
-#     # Forward pass
-#     with torch.no_grad():
-#         outputs = model(**inputs)
-#         logits = outputs.logits_per_image  # shape: [1, 10]
-#         probs = logits.softmax(dim=1).squeeze().cpu().numpy()  # shape: (10,)
-    
-#     print(probs)
-#     print(len(probs))
-#     return probs
+# ---- Fine-tuned CLIP classifier ----
+def predict_clip_digit(image: Image.Image, model, return_preprocessed=False):
+    # Invert and convert to grayscale 28×28
+    mnist_like = ImageOps.invert(image.convert("L")).resize((28, 28))
+
+    # Resize to 224×224 and convert to 3-channel tensor for CLIP
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.Grayscale(num_output_channels=3),
+        transforms.ToTensor()
+    ])
+    image_tensor = transform(mnist_like).unsqueeze(0)  # [1, 3, 224, 224]
+
+    with torch.no_grad():
+        model.eval()
+        logits = model(image_tensor)
+        probs = torch.softmax(logits, dim=1).cpu().numpy().flatten()
+        pred = int(np.argmax(probs)) - 1
+
+    if return_preprocessed:
+        return pred, probs, mnist_like  # preview 28x28 grayscale image
+    return pred, probs
