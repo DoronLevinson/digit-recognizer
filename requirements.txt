@@ -9,3 +9,4 @@ boto3
 scikit-learn
 transformers
 torchvision
+opencv-python-headless
