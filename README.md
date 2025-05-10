@@ -1,13 +1,14 @@
-# Digit Recognizer Web App
+# Digit Recognizer
 
-An interactive Streamlit web app that predicts hand-drawn digits (0–9) using multiple machine learning models:
+This interactive web app demonstrates how various machine learning models can be trained to recognize handwritten digits, even when drawn in noisy or unconventional ways. It includes multiple trained and fine-tuned models, each offering a different approach to digit recognition:
 
-- 🟦 **Convolutional Neural Network (CNN)**
-- 🟪 **Fine-Tuned Vision Transformer (CLIP)**
-- 🟥 **Deep Neural Network (DNN)**
-- 🟩 **K-Nearest Neighbors (KNN)**
+- **Convolutional Neural Network (CNN):** Uses spatial filters to detect and interpret visual digit features.
+- **Multi-Layer Perceptron (MLP):** A fully connected neural network trained on flattened pixel data.
+- **k-Nearest Neighbors (KNN):** Classifies digits by comparing your drawing to stored examples.
+- **Fine-tuned Vision Transformer (ViT):** Adapted from the CLIP model, it treats the image as a sequence of patches and makes predictions based on contextual attention.
 
-Each model provides a real-time prediction along with its confidence level.
+As you draw, the app provides real-time predictions and confidence scores from each model. If a prediction is incorrect, you can submit feedback — this can be used to improve the models over time.  
+You can explore the full source code and models in this repository.
 
 ---
 
