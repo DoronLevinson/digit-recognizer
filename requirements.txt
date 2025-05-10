@@ -7,6 +7,4 @@ matplotlib
 plotly
 boto3
 scikit-learn
-joblib
 transformers
-pickle
