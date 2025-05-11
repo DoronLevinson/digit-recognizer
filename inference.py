@@ -32,10 +32,7 @@ def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
 def predict_dnn_digit(image: Image.Image, model):
     image = ImageOps.invert(image.convert("L")).resize((28, 28))
     img_array = np.array(image).astype(np.float32) / 255.0
-    img_tensor = img_tensor.to("cpu")
-
-    model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
-    model = model.to(device)
+    img_tensor = torch.from_numpy(img_array).unsqueeze(0).unsqueeze(0)
 
     with torch.no_grad():
         output = model(img_tensor)
