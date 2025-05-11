@@ -24,10 +24,7 @@ def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
     download_from_s3(s3_path, path)
     model = SimpleNN()
-    #model = DNN_MNIST()
-    
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = model.to(device)
+    model.load_state_dict(torch.load(path))
 
     model.eval()
     return model
@@ -35,10 +32,10 @@ def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
 def predict_dnn_digit(image: Image.Image, model):
     image = ImageOps.invert(image.convert("L")).resize((28, 28))
     img_array = np.array(image).astype(np.float32) / 255.0
-    img_tensor = torch.from_numpy(img_array).flatten().unsqueeze(0)  # [1, 784]
+    img_tensor = img_tensor.to("cpu")
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    img_tensor = img_tensor.to(device)
+    model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
+    model = model.to(device)
 
     with torch.no_grad():
         output = model(img_tensor)
