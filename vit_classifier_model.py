@@ -19,13 +19,3 @@ class CLIPDigitClassifier(nn.Module):
         x = self.visual_encoder(pixel_values).pooler_output
         x = self.projection(x)
         return self.classifier(x)
-
-def load_clip_digit_model(path="models/clip_digit_classifier.pth", device="cpu"):
-    base_clip = CLIPModel.from_pretrained("wkcn/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M")
-    visual_encoder = base_clip.vision_model
-    visual_projection = base_clip.visual_projection
-
-    model = CLIPDigitClassifier(visual_encoder, visual_projection, num_classes=11)
-    model.load_state_dict(torch.load(path, map_location=torch.device(device)))
-    model.eval()
-    return model

@@ -6,11 +6,10 @@ from inference import (
     load_dnn_model, predict_dnn_digit,
     load_knn_model, predict_knn_digit,
     load_cnn_model, predict_cnn_digit,
-    predict_clip_digit
+    load_clip_digit_model, predict_clip_digit
 )
 import matplotlib.pyplot as plt
 import cv2
-from models.vit_classifier_model import load_clip_digit_model
 
 
 
