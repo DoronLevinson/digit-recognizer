@@ -37,6 +37,9 @@ def predict_dnn_digit(image: Image.Image, model):
     ])
     tensor = transform(image).unsqueeze(0).view(-1, 28 * 28)  # [1, 784]
 
+    tensor = tensor.to(torch.device("cpu"))  # 🔥 force tensor to CPU
+    model = model.to(torch.device("cpu"))  # 🔥 force model to CPU (redundant but safe)
+
     with torch.no_grad():
         output = model(tensor)
         probs = torch.softmax(output, dim=1).numpy().flatten()
@@ -44,7 +47,7 @@ def predict_dnn_digit(image: Image.Image, model):
         pred = int(np.argmax(probs) - 1)
 
     return pred, probs
-    
+
     # image = ImageOps.invert(image.convert("L")).resize((28, 28))
     # img_array = np.array(image).astype(np.float32) / 255.0
     # img_tensor = torch.from_numpy(img_array).view(1, -1)
