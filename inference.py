@@ -23,11 +23,11 @@ def download_from_s3(s3_path, local_path):
 def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     # s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
     # download_from_s3(s3_path, path)
+    state_dict = torch.load(path, map_location="cpu")
     model = SimpleNN()
-    model.cpu()
     for name, param in model.named_parameters():
         print(f"{name}: {param.device}")
-    model.load_state_dict(torch.load("models/simple_nn_mnist_model.pth", map_location=torch.device("cpu")))
+    model.load_state_dict(state_dict)
     model.eval()
     return model
 
