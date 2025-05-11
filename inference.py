@@ -19,7 +19,7 @@ def download_from_s3(s3_path, local_path):
         s3.download_file(bucket, key, local_path)
 
 # ---- DNN model ----
-def load_dnn_model(path="models/dnn_model.pth"):
+def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
     download_from_s3(s3_path, path)
     model = DNN_MNIST()
