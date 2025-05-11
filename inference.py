@@ -1,18 +1,27 @@
 import torch
 import numpy as np
 import os
-import joblib
-import urllib.request
 from PIL import ImageOps, Image
-from models.dnn_model import DNN_MNIST
-from models.cnn_model import CNN_MNIST
+from dnn_model import DNN_MNIST
+from cnn_model import CNN_MNIST
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
-from models.vit_classifier_model import load_clip_digit_model, CLIPDigitClassifier
+from vit_classifier_model import CLIPDigitClassifier
+from transformers import CLIPModel
 import torchvision.transforms as transforms
+
+def download_from_s3(s3_path, local_path):
+    if not os.path.exists(local_path):
+        print(f"Downloading {s3_path} to {local_path}...")
+        s3 = boto3.client("s3")
+        bucket, key = s3_path.replace("s3://", "").split("/", 1)
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
+        s3.download_file(bucket, key, local_path)
 
 # ---- DNN model ----
 def load_dnn_model(path="models/dnn_model.pth"):
+    s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
+    download_from_s3(s3_path, path)
     model = DNN_MNIST()
     model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     model.eval()
@@ -33,19 +42,14 @@ def predict_dnn_digit(image: Image.Image, model):
 
 # ---- KNN model ----
 
-def load_knn_model(path="models/knn_model.joblib"):
-    # for streamlit deployment
-    X = pd.read_csv("models/X_knn.csv").values
-    y = pd.read_csv("models/y_knn.csv").values.ravel()
-    X = X[:2000]
-    y = y[:2000]
-
+def load_knn_model():
+    download_from_s3("s3://digit-recognizer-bucket/data/X_knn.csv", "models/X_knn.csv")
+    download_from_s3("s3://digit-recognizer-bucket/data/y_knn.csv", "models/y_knn.csv")
+    X = pd.read_csv("models/X_knn.csv").values[:2000]
+    y = pd.read_csv("models/y_knn.csv").values.ravel()[:2000]
     knn = KNeighborsClassifier(n_neighbors=10)
     knn.fit(X, y)
     return knn
-
-    # # for local deployment
-    # return joblib.load(path)
 
 def predict_knn_digit(image: Image.Image, knn_model):
     # Resize and convert to grayscale
@@ -60,7 +64,21 @@ def predict_knn_digit(image: Image.Image, knn_model):
 
 
 # ---- CNN model ----
+def load_clip_digit_model(path="models/clip_digit_classifier.pth", device="cpu"):
+    s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
+    download_from_s3(s3_path, path)
+    base_clip = CLIPModel.from_pretrained("wkcn/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M")
+    visual_encoder = base_clip.vision_model
+    visual_projection = base_clip.visual_projection
+
+    model = CLIPDigitClassifier(visual_encoder, visual_projection, num_classes=11)
+    model.load_state_dict(torch.load(path, map_location=torch.device(device)))
+    model.eval()
+    return model
+
 def load_cnn_model(path="models/cnn_model.pth"):
+    s3_path = "s3://digit-recognizer-bucket/models/cnn_model.pth"
+    download_from_s3(s3_path, path)
     model = CNN_MNIST()
     model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     model.eval()
