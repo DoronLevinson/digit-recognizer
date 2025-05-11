@@ -4,6 +4,7 @@ import os
 from PIL import ImageOps, Image
 from dnn_model import DNN_MNIST
 from cnn_model import CNN_MNIST
+from simple_nn_model.py import SimpleNN
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from vit_classifier_model import CLIPDigitClassifier
@@ -22,7 +23,8 @@ def download_from_s3(s3_path, local_path):
 def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
     download_from_s3(s3_path, path)
-    model = DNN_MNIST()
+    model = SimpleNN()
+    #model = DNN_MNIST()
     model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
     model.eval()
     return model
