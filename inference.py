@@ -1,7 +1,6 @@
 import torch
 import numpy as np
 import os
-os.environ["TORCH_DISABLE_META"] = "1"
 from PIL import ImageOps, Image
 from dnn_model import DNN_MNIST
 from cnn_model import CNN_MNIST
