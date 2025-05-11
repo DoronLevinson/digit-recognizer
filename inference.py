@@ -38,7 +38,7 @@ def predict_dnn_digit(image: Image.Image, model):
     tensor = transform(image).unsqueeze(0).view(-1, 28 * 28)  # [1, 784]
 
     tensor = tensor.to(torch.device("cpu"))  # 🔥 force tensor to CPU
-    # model = model.to(torch.device("cpu"))  # 🔥 force model to CPU (redundant but safe)
+    model = model.to(torch.device("cpu"))  # 🔥 force model to CPU (redundant but safe)
 
     with torch.no_grad():
         output = model(tensor)
