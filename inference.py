@@ -24,6 +24,7 @@ def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     # s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
     # download_from_s3(s3_path, path)
     model = SimpleNN()
+    model.to(torch.device("cpu")) 
     model.load_state_dict(torch.load("models/simple_nn_mnist_model.pth", map_location=torch.device("cpu")))
     model.eval()
     return model
@@ -39,8 +40,6 @@ def predict_dnn_digit(image: Image.Image, model):
 
     tensor = tensor.to(torch.device("cpu"))  # 🔥 force tensor to CPU
     assert all(p.device.type == "cpu" for p in model.parameters())
-    # if next(model.parameters()).device != torch.device("cpu"):
-    #     model = model.to(torch.device("cpu"))
 
     with torch.no_grad():
         output = model(tensor)
