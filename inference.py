@@ -4,7 +4,7 @@ import os
 from PIL import ImageOps, Image
 from dnn_model import DNN_MNIST
 from cnn_model import CNN_MNIST
-from simple_nn_model.py import SimpleNN
+from simple_nn_model import SimpleNN
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 from vit_classifier_model import CLIPDigitClassifier
