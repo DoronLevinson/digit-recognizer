@@ -1,3 +1,5 @@
+import os
+os.environ["TORCH_DISABLE_META"] = "1"
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image, ImageOps
