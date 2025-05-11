@@ -29,7 +29,7 @@ def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     return model
 
 def predict_dnn_digit(image: Image.Image, model):
-        transform = transforms.Compose([
+    transform = transforms.Compose([
         transforms.Resize((28, 28)),
         transforms.Grayscale(),
         transforms.ToTensor(),
