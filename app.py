@@ -49,10 +49,10 @@ canvas_col, prediction_col = st.columns([1.5, 1])
 
 # Sidebar model toggle
 st.sidebar.markdown("### Show Models:")
-show_model_a = st.sidebar.checkbox("CNN Model (Blue)", value=True)
-show_model_b = st.sidebar.checkbox("Fine-Tuned ViT Model (Purple)", value=True)
-show_model_c = st.sidebar.checkbox("DNN Model (Red)", value=True)
-show_model_d = st.sidebar.checkbox("KNN Model (Green)", value=False)
+show_model_a = st.sidebar.checkbox("CNN Model (Blue)", value=False)
+show_model_b = st.sidebar.checkbox("Fine-Tuned ViT Model (Purple)", value=False)
+show_model_c = st.sidebar.checkbox("DNN Model (Red)", value=False)
+show_model_d = st.sidebar.checkbox("KNN Model (Green)", value=True)
 
 
 # Canvas
