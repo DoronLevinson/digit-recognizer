@@ -98,19 +98,19 @@ with prediction_col:
         image = Image.fromarray((canvas_result.image_data[:, :, 0]).astype(np.uint8))
 
         if show_model_a:
-            pred_cnn, probs_cnn = predict_cnn_digit(image, cnn_model)
+            pred_cnn, probs_cnn = predict_cnn_digit(image)
             plot_confidence(probs_cnn, title="CNN", color="blue")
 
         if show_model_b:
-            pred_clip, probs_clip = predict_clip_digit(image, clip_digit_model)
+            pred_clip, probs_clip = predict_clip_digit(image)
             plot_confidence(probs_clip, title="Fine-Tuned ViT (CLIP)", color="purple")
         
         if show_model_c:
-            pred_dnn, probs_dnn = predict_dnn_digit(image, dnn_model)
+            pred_dnn, probs_dnn = predict_dnn_digit(image)
             plot_confidence(probs_dnn, title="MLP", color="red")
         
         if show_model_d:
-            pred_knn, probs_knn = predict_knn_digit(image, knn_model)
+            pred_knn, probs_knn = predict_knn_digit(image)
             plot_confidence(probs_knn, title="KNN", color="green")
 
     else:
