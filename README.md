@@ -174,7 +174,7 @@ If you'd like to contribute or propose changes, feel free to open an issue or re
 
 ---
 
-##Author
+## Author
 Doron Levinson
 [LinkedIn Profile](https://www.linkedin.com/in/doron-levinson/) 
 [GitHub Profile](https://github.com/DoronLevinson)
