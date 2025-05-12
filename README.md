@@ -9,7 +9,7 @@ This interactive web app demonstrates how various machine learning models can be
 - **k-Nearest Neighbors (KNN):** Classifies digits by comparing your drawing to stored examples.
 - **Fine-tuned Vision Transformer (ViT):** Adapted from the CLIP model, it treats the image as a sequence of patches and makes predictions based on contextual attention.
 
-As you draw, the app provides real-time predictions and confidence scores from each model. If a prediction is incorrect, you can submit feedback — this can be used to improve the models over time.  
+As the user draws, the app provides real-time predictions and confidence scores from each model. If a prediction is incorrect, the user can submit feedback — this can be used to improve the models over time.  
 You can explore the full source code and models in this repository.
 
 ---
@@ -18,21 +18,68 @@ You can explore the full source code and models in this repository.
 
 ```
 .
-├── app.py                         # Main Streamlit app
-├── inference.py                  # Shared inference and utility functions
-├── cnn_model.py                  # CNN model loader and predictor
-├── dnn_model.py                  # DNN model loader and predictor
-├── vit_classifier_model.py       # CLIP ViT model loader and predictor
+├── app.py                          # Main Streamlit app
+├── inference.py                    # Shared inference and utility functions
+├── model_definitions/
+│ ├── cnn_model.py                  # CNN model loader and predictor
+│ ├── dnn_model.py                  # DNN model loader and predictor
+│ ├── simple_nn_model.py            # MLP model loader and predictor
+│ ├── vit_classifier_model.py       # CLIP ViT model loader and predictor
 ├── models/
-│   ├── cnn_model.pth             # Saved CNN model
-│   ├── dnn_model.pth             # Saved DNN model
-│   ├── clip_digit_classifier.pth # Saved ViT model
-│   ├── X_knn.csv                 # KNN feature vectors
-│   ├── y_knn.csv                 # KNN labels
-├── requirements.txt              # Python dependencies
-├── Dockerfile                    # (Optional) Docker configuration
-├── .gitignore                    # Files to ignore in Git
+│ ├── cnn_model.pth                 # Saved CNN model
+│ ├── dnn_model.pth                 # Saved DNN model
+│ ├── simple_nn_mnist_model.pth     # Saved MLP model
+│ ├── clip_digit_classifier.pth     # Saved ViT model
+│ ├── X_knn.csv                     # KNN feature vectors
+│ ├── y_knn.csv                     # KNN labels
+├── digit-recognizer.png            # Project banner
+├── requirements.txt                # Python dependencies
+├── Dockerfile                      # Docker configuration
+├── .gitignore                      # Files to ignore in Git
 ```
+
+---
+
+## ☁️ Backend Integration & Deployment Flow
+
+---
+
+To support scalable and clean architecture, this project includes a modular **backend API** built with **FastAPI**, containerized with **Docker**, and deployable via **AWS** services. The Streamlit app interacts with this backend to run predictions and serve results efficiently.
+
+### 🔧 Backend API with FastAPI
+- We implemented a simple but robust REST API using [FastAPI](https://fastapi.tiangolo.com/) that exposes endpoints for:
+  - Loading and serving predictions from the trained models (CNN, MLP, ViT).
+  - Handling digit classification requests.
+- This allows decoupling model inference from the frontend UI, improving flexibility and response time.
+
+### 📦 Containerization with Docker
+- The entire project is Dockerized to ensure consistent environments across development, testing, and deployment.
+- Models and dependencies are bundled into containers for reproducible inference services.
+
+### ☁️ Deployment via AWS
+- The Docker container is deployed to AWS (e.g., ECS or EC2) to provide a persistent backend service.
+- The API is publicly accessible and securely callable by the Streamlit frontend.
+
+### 🎨 Streamlit Frontend
+- The Streamlit app acts as the user-facing interface, calling the FastAPI backend for predictions.
+- This separation ensures a responsive, interactive UI without compromising performance.
+
+---
+
+### 🔗 System Diagram (Conceptual)
+
+[User Input → Streamlit UI] → [FastAPI Model Server] → [Model Prediction] → [Return to UI]
+
+---
+
+### 🔖 Technologies Used
+
+<p float="left">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/FastAPI_logo.svg" alt="FastAPI" width="70"/>
+  <img src="https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.svg" alt="Streamlit" width="120"/>
+  <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="90"/>
+  <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="100"/>
+</p>
 
 ---
 
@@ -100,8 +147,8 @@ Open your browser to [http://localhost:8502](http://localhost:8502)
 ---
 
 ##Author
-
-[Doron Levinson](https://www.linkedin.com/in/doron-levinson/) 
+Doron Levinson
+[LinkedIn Profile](https://www.linkedin.com/in/doron-levinson/) 
 [GitHub Profile](https://github.com/DoronLevinson)
 
 ---
