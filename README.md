@@ -95,7 +95,11 @@ To support scalable and clean architecture, this project includes a modular **ba
   </tr>
 </table>
 
+---
+
 ## ⚙️ Setup Instructions
+
+---
 
 ### 1. Clone the Repository
 
