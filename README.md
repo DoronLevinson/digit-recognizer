@@ -76,15 +76,15 @@ To support scalable and clean architecture, this project includes a modular **ba
 ### 🔖 Technologies Used
 
 <p align="center">
-  <img src="https://static-00.iconduck.com/assets.00/pytorch-icon-423x512-6xpyyw7t.png" alt="PyTorch" width="90"/>
+  <img src="https://static-00.iconduck.com/assets.00/pytorch-icon-423x512-6xpyyw7t.png" alt="PyTorch" width="60"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="https://res.cloudinary.com/harendra21/image/upload/v1742473055/withcodeexample.com/getting-started-with-python-fastapi-a-comprehensive-guide_tnigh2.jpg" alt="FastAPI" width="90"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGDKmSgL7UJ6sstMUQTtjI2iDN7ClN2jRZ5Q&s" alt="Streamlit" width="90"/>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGDKmSgL7UJ6sstMUQTtjI2iDN7ClN2jRZ5Q&s" alt="Streamlit" width="60"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="65"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://img.icons8.com/color/512/amazon-web-services.png" alt="AWS" width="70"/>
+  <img src="https://img.icons8.com/color/512/amazon-web-services.png" alt="AWS" width="60"/>
 </p>
 
 <p align="center">
