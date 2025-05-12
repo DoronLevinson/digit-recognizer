@@ -1,6 +1,3 @@
-import os
-os.environ["TORCH_DISABLE_META"] = "1"
-
 import torch
 import torch.nn as nn
 

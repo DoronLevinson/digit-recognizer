@@ -1,15 +1,18 @@
 import os
-os.environ["TORCH_DISABLE_META"] = "1"
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image, ImageOps
 import numpy as np
-from inference import (
-    load_dnn_model, predict_dnn_digit,
-    load_knn_model, predict_knn_digit,
-    load_cnn_model, predict_cnn_digit,
-    load_clip_digit_model, predict_clip_digit
+from remote import (
+    predict_dnn_digit, predict_cnn_digit,
+    predict_knn_digit, predict_clip_digit
 )
+# from inference import (
+#     load_dnn_model, predict_dnn_digit,
+#     load_knn_model, predict_knn_digit,
+#     load_cnn_model, predict_cnn_digit,
+#     load_clip_digit_model, predict_clip_digit
+# )
 import matplotlib.pyplot as plt
 import cv2
 
@@ -40,11 +43,11 @@ The system is powered by multiple trained and fine-tuned models:
 As you draw, each model provides a real-time prediction along with its confidence. If the models misclassify your input, you can provide feedback — your corrections will be used in the future to improve the system through continued learning.
 The full source code is available on [GitHub](https://github.com/DoronLevinson/digit-recognizer).
 """)
-# Load models
-dnn_model = load_dnn_model()
-knn_model = load_knn_model()
-cnn_model = load_cnn_model()
-clip_digit_model = load_clip_digit_model("models/clip_digit_classifier.pth")
+# # Load models
+# dnn_model = load_dnn_model()
+# knn_model = load_knn_model()
+# cnn_model = load_cnn_model()
+# clip_digit_model = load_clip_digit_model("models/clip_digit_classifier.pth")
 
 # Layout: canvas on left, predictions on right
 canvas_col, prediction_col = st.columns([1.5, 1])

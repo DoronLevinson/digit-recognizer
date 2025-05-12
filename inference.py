@@ -1,13 +1,14 @@
 import torch
 import numpy as np
 import os
+import boto3 
 from PIL import ImageOps, Image
-from dnn_model import DNN_MNIST
-from cnn_model import CNN_MNIST
-from simple_nn_model import SimpleNN
+from model_definitions.dnn_model import DNN_MNIST
+from model_definitions.cnn_model import CNN_MNIST
+from model_definitions.simple_nn_model import SimpleNN
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
-from vit_classifier_model import CLIPDigitClassifier
+from model_definitions.vit_classifier_model import CLIPDigitClassifier
 from transformers import CLIPModel
 import torchvision.transforms as transforms
 
@@ -20,11 +21,11 @@ def download_from_s3(s3_path, local_path):
         s3.download_file(bucket, key, local_path)
 
 # ---- DNN model ----
-def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
-    # s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
-    # download_from_s3(s3_path, path)
+def load_dnn_model(path="models/dnn_model.pth"):
+    s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
+    download_from_s3(s3_path, path)
     state_dict = torch.load(path, map_location="cpu")
-    model = SimpleNN()
+    model = DNN_MNIST()
     for name, param in model.named_parameters():
         print(f"{name}: {param.device}")
     model.load_state_dict(state_dict)
@@ -32,37 +33,18 @@ def load_dnn_model(path="models/simple_nn_mnist_model.pth"):
     return model
 
 def predict_dnn_digit(image: Image.Image, model):
-    transform = transforms.Compose([
-        transforms.Resize((28, 28)),
-        transforms.Grayscale(),
-        transforms.ToTensor(),
-        transforms.Normalize((0.5,), (0.5,))
-    ])
-    tensor = transform(image).unsqueeze(0).view(-1, 28 * 28)  # [1, 784]
-
-    tensor = tensor.to(torch.device("cpu"))  # 🔥 force tensor to CPU
-    assert all(p.device.type == "cpu" for p in model.parameters())
+    image = ImageOps.invert(image.convert("L")).resize((28, 28))
+    img_array = np.array(image).astype(np.float32) / 255.0
+    img_tensor = torch.from_numpy(img_array).view(1, -1)
+    #img_tensor = torch.from_numpy(img_array).unsqueeze(0).unsqueeze(0)
 
     with torch.no_grad():
-        output = model(tensor)
+        output = model(img_tensor)
         probs = torch.softmax(output, dim=1).numpy().flatten()
-        probs = np.concatenate(([probs[-1]], probs[:-1]))  # Move class -1 to front
+        probs = np.concatenate(([probs[-1]], probs[:-1]))  # move "-1" class to front
         pred = int(np.argmax(probs) - 1)
 
     return pred, probs
-
-    # image = ImageOps.invert(image.convert("L")).resize((28, 28))
-    # img_array = np.array(image).astype(np.float32) / 255.0
-    # img_tensor = torch.from_numpy(img_array).view(1, -1)
-    # #img_tensor = torch.from_numpy(img_array).unsqueeze(0).unsqueeze(0)
-
-    # with torch.no_grad():
-    #     output = model(img_tensor)
-    #     probs = torch.softmax(output, dim=1).numpy().flatten()
-    #     probs = np.concatenate(([probs[-1]], probs[:-1]))  # move "-1" class to front
-    #     pred = int(np.argmax(probs) - 1)
-
-    # return pred, probs
 
 # ---- KNN model ----
 
@@ -89,7 +71,7 @@ def predict_knn_digit(image: Image.Image, knn_model):
 
 # ---- CNN model ----
 def load_clip_digit_model(path="models/clip_digit_classifier.pth", device="cpu"):
-    s3_path = "s3://digit-recognizer-bucket/models/dnn_model.pth"
+    s3_path = "s3://digit-recognizer-bucket/models/clip_digit_classifier.pth"
     download_from_s3(s3_path, path)
     base_clip = CLIPModel.from_pretrained("wkcn/TinyCLIP-ViT-8M-16-Text-3M-YFCC15M")
     visual_encoder = base_clip.vision_model
