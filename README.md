@@ -76,7 +76,7 @@ To support scalable and clean architecture, this project includes a modular **ba
 ### 🔖 Technologies Used
 
 <p align="center">
-  <img src="https://static-00.iconduck.com/assets.00/pytorch-icon-423x512-6xpyyw7t.png" alt="PyTorch" width="60"/>
+  <img src="https://static-00.iconduck.com/assets.00/pytorch-icon-423x512-6xpyyw7t.png" alt="PyTorch" width="45"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="https://res.cloudinary.com/harendra21/image/upload/v1742473055/withcodeexample.com/getting-started-with-python-fastapi-a-comprehensive-guide_tnigh2.jpg" alt="FastAPI" width="90"/>
   &nbsp;&nbsp;&nbsp;&nbsp;
