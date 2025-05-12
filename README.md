@@ -97,68 +97,80 @@ To support scalable and clean architecture, this project includes a modular **ba
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Setup & Usage
 
 ---
 
-### 1. Clone the Repository
+### 1. Use the App
+
+You can use the app directly here:  
+**[ml-digit-recognizer.streamlit.app](https://ml-digit-recognizer.streamlit.app)**
+
+---
+
+### 2. Run Locally
 
 ```bash
 git clone https://github.com/DoronLevinson/digit-recognizer.git
 cd digit-recognizer
-```
-
-### 2. Create and Activate a Virtual Environment
-
-```bash
 python -m venv venv
 ```
+
+Activate the environment:
 
 - **Windows (PowerShell):**
   ```powershell
   .\venv\Scripts\Activate.ps1
   ```
 
-- **Windows (CMD):**
-  ```cmd
-  venv\Scripts\activate.bat
-  ```
-
-- **Linux/macOS:**
+- **macOS/Linux:**
   ```bash
   source venv/bin/activate
   ```
 
-### 3. Install Python Dependencies
+Then install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-If you get an error about missing `sklearn`, also run:
-
-```bash
-pip install scikit-learn
-```
-
----
-
-## Run the App Locally
+Run the app:
 
 ```bash
 streamlit run app.py
 ```
 
-Open your browser to [http://localhost:8502](http://localhost:8502)
+Open your browser to:  
+[http://localhost:8501](http://localhost:8501)
 
 ---
 
-## How to Use
+### 3. Run with Docker
+
+```bash
+git clone https://github.com/DoronLevinson/digit-recognizer.git
+cd digit-recognizer
+docker build -t digit-recognizer .
+docker run -p 8501:8501 digit-recognizer
+```
+
+---
+
+## 🧩 How to Use
 
 1. Draw a digit (0–9) in the canvas area.
-2. Toggle which models to display in the sidebar.
-3. View the predictions and confidence bars on the right side.
-4. Optionally, submit feedback on incorrect predictions.
+2. Toggle which models to activate in the sidebar.
+3. View predictions and confidence bars.
+4. Submit feedback to improve the model.
+
+---
+
+## 🤝 Contributing
+
+Contributions are very welcome!
+
+CI/CD pipelines are currently under development.  
+If you'd like to contribute or propose changes, feel free to open an issue or reach out directly.
 
 ---
 
