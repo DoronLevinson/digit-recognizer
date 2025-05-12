@@ -26,6 +26,7 @@ def predict_remote(image, model: str):
         res = response.json()
         return res["prediction"], res["probs"]
     else:
+        print("RESPONSE TEXT:", response.text)  # 👈 Add this
         raise RuntimeError(f"{model.upper()} API error: {response.status_code} - {response.text}")
 
 # Wrappers per model

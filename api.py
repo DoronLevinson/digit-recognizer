@@ -51,10 +51,16 @@ async def predict_cnn(file: UploadFile = File(...)):
 # KNN Prediction Endpoint
 @app.post("/predict/knn")
 async def predict_knn(file: UploadFile = File(...)):
-    image = read_uploaded_image(file)
-    pred, probs = predict_knn_digit(image, knn_model)
-    return {"model": "KNN", "prediction": pred, "probs": probs}
-
+    try:
+        image = read_uploaded_image(file)
+        print("✅ Image received:", image.size, image.mode)
+        pred, probs = predict_knn_digit(image, knn_model)
+        print("✅ KNN prediction successful:", pred)
+        return {"model": "KNN", "prediction": pred, "probs": probs}
+    except Exception as e:
+        print("❌ KNN prediction error:", e)
+        raise HTTPException(status_code=500, detail=f"KNN Error: {str(e)}")
+        
 # ViT-CLIP Prediction Endpoint
 @app.post("/predict/clip")
 async def predict_clip(file: UploadFile = File(...)):
