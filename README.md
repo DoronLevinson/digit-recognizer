@@ -1,6 +1,6 @@
 # Digit Recognizer
 
-![digit-recognizer](https://github.com/user-attachments/assets/65945cee-629b-4129-aeed-653c173d9ee3)
+![digit-recognizer](digit-recognizer.png)
 
 This interactive web app demonstrates how various machine learning models can be trained to recognize handwritten digits, even when drawn in noisy or unconventional ways. It includes multiple trained and fine-tuned models, each offering a different approach to digit recognition:
 
