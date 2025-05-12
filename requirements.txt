@@ -11,3 +11,5 @@ opencv-python-headless
 uvicorn[standard]
 python-multipart
 fastapi
+requests
+io
