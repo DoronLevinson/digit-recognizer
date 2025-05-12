@@ -75,7 +75,7 @@ To support scalable and clean architecture, this project includes a modular **ba
 ### 🔖 Technologies Used
 
 <p align="center">
-  <img src="https://images.seeklogo.com/logo-png/42/1/fastapi-logo-png_seeklogo-425420.png" alt="FastAPI" width="70" style="margin: 0 30px;"/>
+  <img src="https://res.cloudinary.com/harendra21/image/upload/v1742473055/withcodeexample.com/getting-started-with-python-fastapi-a-comprehensive-guide_tnigh2.jpg" alt="FastAPI" width="70" style="margin: 0 30px;"/>
   <img src="https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.svg" alt="Streamlit" width="120" style="margin: 0 30px;"/>
   <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="90" style="margin: 0 30px;"/>
   <img src="https://img.icons8.com/color/512/amazon-web-services.png" alt="AWS" width="100" style="margin: 0 30px;"/>
