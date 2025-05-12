@@ -69,13 +69,17 @@ To support scalable and clean architecture, this project includes a modular **ba
 ### 🔗 System Diagram (Conceptual)
 
 [User Input → Streamlit UI] → [FastAPI Model Server] → [Model Prediction] → [Return to UI]
+![flow-chart](digit-recognizer-flowchart.png)
 
 ---
 
 ### 🔖 Technologies Used
 
-<table align="center">
+<table align="left">
   <tr>
+    <td align="center">
+      <img src="https://miro.medium.com/v2/resize:fit:512/1*IMGOKBIN8qkOBt5CH55NSw.png" alt="Pytorch" width="80"/><br/>PyTorch
+    </td>
     <td align="center">
       <img src="https://res.cloudinary.com/harendra21/image/upload/v1742473055/withcodeexample.com/getting-started-with-python-fastapi-a-comprehensive-guide_tnigh2.jpg" alt="FastAPI" width="80"/><br/>FastAPI
     </td>
@@ -83,7 +87,7 @@ To support scalable and clean architecture, this project includes a modular **ba
       <img src="https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.svg" alt="Streamlit" width="120"/><br/>Streamlit
     </td>
     <td align="center">
-      <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="90"/><br/>Docker
+      <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker" width="70"/><br/>Docker
     </td>
     <td align="center">
       <img src="https://img.icons8.com/color/512/amazon-web-services.png" alt="AWS" width="70"/><br/>AWS
