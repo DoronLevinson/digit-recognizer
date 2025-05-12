@@ -2,7 +2,7 @@ import requests
 from PIL import Image
 import io
 
-REMOTE_API_BASE = "http://13.61.104.76:8000"
+REMOTE_API_BASE = "http://13.60.74.212:8000"
 
 def _prepare_image(image: Image.Image):
     """Convert image to PNG bytes for multipart upload."""

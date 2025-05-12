@@ -12,4 +12,3 @@ uvicorn[standard]
 python-multipart
 fastapi
 requests
-io

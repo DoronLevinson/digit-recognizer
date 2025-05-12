@@ -10,6 +10,7 @@ from inference import (
     load_dnn_model, load_cnn_model,
     load_knn_model, load_clip_digit_model
 )
+from fastapi import HTTPException
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -37,16 +38,28 @@ def read_uploaded_image(file: UploadFile) -> Image.Image:
 # DNN Prediction Endpoint
 @app.post("/predict/dnn")
 async def predict_dnn(file: UploadFile = File(...)):
-    image = read_uploaded_image(file)
-    pred, probs = predict_dnn_digit(image, dnn_model)
-    return {"model": "DNN", "prediction": pred, "probs": probs}
+    try:
+        image = read_uploaded_image(file)
+        print("✅ DNN image received:", image.size, image.mode)
+        pred, probs = predict_dnn_digit(image, dnn_model)
+        print("✅ DNN prediction successful:", pred)
+        return {"model": "DNN", "prediction": pred, "probs": probs.tolist()}
+    except Exception as e:
+        print("❌ DNN prediction error:", str(e))
+        raise HTTPException(status_code=500, detail=f"DNN Error: {str(e)}")
 
 # CNN Prediction Endpoint
 @app.post("/predict/cnn")
 async def predict_cnn(file: UploadFile = File(...)):
-    image = read_uploaded_image(file)
-    pred, probs = predict_cnn_digit(image, cnn_model)
-    return {"model": "CNN", "prediction": pred, "probs": probs}
+    try:
+        image = read_uploaded_image(file)
+        print("✅ CNN image received:", image.size, image.mode)
+        pred, probs = predict_cnn_digit(image, cnn_model)
+        print("✅ CNN prediction successful:", pred)
+        return {"model": "CNN", "prediction": pred, "probs": probs.tolist()}
+    except Exception as e:
+        print("❌ CNN prediction error:", str(e))
+        raise HTTPException(status_code=500, detail=f"CNN Error: {str(e)}")
 
 # KNN Prediction Endpoint
 @app.post("/predict/knn")
@@ -56,7 +69,7 @@ async def predict_knn(file: UploadFile = File(...)):
         print("✅ Image received:", image.size, image.mode)
         pred, probs = predict_knn_digit(image, knn_model)
         print("✅ KNN prediction successful:", pred)
-        return {"model": "KNN", "prediction": pred, "probs": probs}
+        return {"model": "KNN", "prediction": int(pred), "probs": probs.tolist()}
     except Exception as e:
         print("❌ KNN prediction error:", e)
         raise HTTPException(status_code=500, detail=f"KNN Error: {str(e)}")
@@ -64,9 +77,15 @@ async def predict_knn(file: UploadFile = File(...)):
 # ViT-CLIP Prediction Endpoint
 @app.post("/predict/clip")
 async def predict_clip(file: UploadFile = File(...)):
-    image = read_uploaded_image(file)
-    pred, probs = predict_clip_digit(image, clip_model)
-    return {"model": "ViT-CLIP", "prediction": pred, "probs": probs}
+    try:
+        image = read_uploaded_image(file)
+        print("✅ CLIP image received:", image.size, image.mode)
+        pred, probs = predict_clip_digit(image, clip_model)
+        print("✅ CLIP prediction successful:", pred)
+        return {"model": "ViT-CLIP", "prediction": int(pred), "probs": probs.tolist()}
+    except Exception as e:
+        print("❌ CLIP prediction error:", str(e))
+        raise HTTPException(status_code=500, detail=f"CLIP Error: {str(e)}")
 
 # Check
 @app.get("/")
