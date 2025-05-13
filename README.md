@@ -44,25 +44,27 @@ You can explore the full source code and models in this repository.
 
 ---
 
-To support scalable and clean architecture, this project includes a modular **backend API** built with **FastAPI**, containerized with **Docker**, and deployable via **AWS** services. The Streamlit app interacts with this backend to run predictions and serve results efficiently.
+To support scalable and clean architecture, this project includes a modular **backend API** built with **FastAPI**, containerized with **Docker**, and deployed via **AWS ECS**. The Streamlit app interacts with this backend to run predictions and serve results efficiently.
 
 ### 🔧 Backend API with FastAPI
 - We implemented a simple but robust REST API using [FastAPI](https://fastapi.tiangolo.com/) that exposes endpoints for:
-  - Loading and serving predictions from the trained models (CNN, MLP, ViT).
+  - Loading and serving predictions from the trained models (CNN, MLP, ViT, KNN).
   - Handling digit classification requests.
-- This allows decoupling model inference from the frontend UI, improving flexibility and response time.
+- Model weights and KNN reference data are dynamically loaded from **AWS S3**, enabling lightweight deployment and easier updates.
+- This setup decouples model inference from the frontend UI, improving flexibility and response time.
 
 ### 📦 Containerization with Docker
 - The entire project is Dockerized to ensure consistent environments across development, testing, and deployment.
-- Models and dependencies are bundled into containers for reproducible inference services.
+- Models and dependencies are bundled into containers, with external data (weights, KNN samples) fetched from S3 at runtime.
 
-### ☁️ Deployment via AWS
-- The Docker container is deployed to AWS (e.g., ECS or EC2) to provide a persistent backend service.
+### ☁️ Deployment via AWS ECS
+- The Dockerized API is deployed using **AWS ECS**, providing a scalable and persistent backend service.
+- S3 integration ensures minimal container size while keeping model assets centralized.
 - The API is publicly accessible and securely callable by the Streamlit frontend.
 
 ### 🎨 Streamlit Frontend
-- The Streamlit app acts as the user-facing interface, calling the FastAPI backend for predictions.
-- This separation ensures a responsive, interactive UI without compromising performance.
+- The Streamlit app serves as the user-facing interface, calling the FastAPI backend for real-time predictions.
+- This separation ensures a responsive, interactive UI without compromising backend performance or flexibility.
 
 ---
 
